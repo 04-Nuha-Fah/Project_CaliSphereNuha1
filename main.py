@@ -34,6 +34,7 @@ TEKS_POPUP = "Lakukan latihan ini 4 kali seminggu dan gunakan sisa hari untuk is
 
 #Tata susunan icon char
 IKON = {
+    #Mode Easy
     "wall_pushup": dict(alat=[(82, 4, 82, 76)],
                         badan=[(18, 70, 62, 30), (62, 30, 82, 44)],
                         kepala=[(70, 24, 6)]),
@@ -48,6 +49,7 @@ IKON = {
                   kepala=[(50, 14, 6)]),
     "plank": dict(badan=[(12, 66, 74, 54), (74, 54, 74, 68)],
                   kepala=[(86, 50, 6)]),
+    #Mode Normal
     "pushup": dict(badan=[(12, 68, 74, 48), (74, 48, 74, 69)],
                    kepala=[(86, 44, 6)]),
     "pullup": dict(alat=[(10, 8, 90, 8)],
@@ -66,6 +68,7 @@ IKON = {
                  kepala=[(74, 54, 6)]),
     "adv_plank": dict(badan=[(10, 68, 74, 52), (74, 52, 74, 68), (80, 52, 94, 52)],
                       kepala=[(86, 42, 6)]),
+    #Mode hard
     "handstand": dict(badan=[(50, 70, 50, 12), (50, 12, 46, 4), (50, 12, 54, 4)],
                       kepala=[(60, 62, 6)]),
     "archer": dict(badan=[(50, 34, 50, 56), (50, 40, 26, 68), (50, 40, 74, 52),
@@ -81,7 +84,6 @@ IKON = {
                    kepala=[(42, 14, 6)]),
 }
 
-#Keterangan
 TINGKAT = {
     "easy": dict(
         mode="MUDAH", untuk="Pemula",
@@ -91,23 +93,23 @@ TINGKAT = {
               "berolahraga. Fokusnya mengenalkan gerakan dasar, membangun "
               "teknik yang benar, dan membentuk kebiasaan latihan."),
         gerakan=[
-            ("Push Up Dinding", "wall_pushup",
+            ("Wall Pushup", "wall_pushup",
              "Push up (tekan badan) berdiri menghadap tembok. Gerakan paling ringan untuk melatih dada, bahu, dan lengan belakang.",
              " Berdirilah satu langkah dari tembok, letakkan telapak tangan di dinding setinggi bahu. "
              "Tekuk siku hingga dada mendekati tembok, lalu dorong kembali. Jaga tubuh tetap lurus dan perut mengencang."),
-            ("Push Up Lutut", "knee_pushup",
+            ("Knee Pushup", "knee_pushup",
              "Push up dengan lutut menempel di lantai untuk membangun kekuatan tubuh bagian atas.",
              " Posisikan tangan selebar bahu, lutut di lantai, tubuh lurus dari kepala hingga lutut. "
              "Turunkan dada mendekati lantai, lalu dorong naik. Jangan biarkan pinggul turun atau menungging."),
-            ("Jongkok", "squat",
+            ("Squat", "squat",
              "Gerakan jongkok dasar (squat) untuk melatih paha, bokong, dan kestabilan tubuh.",
              " Berdiri selebar bahu, dorong pinggul ke belakang seperti duduk di kursi. "
              "Turunkan badan hingga paha hampir sejajar lantai, dada tetap tegak, lalu berdiri kembali dengan menekan tumit."),
-            ("Langkah Maju", "lunge",
+            ("Lunge", "lunge",
              "Melangkah ke depan lalu menekuk lutut (lunge), melatih kaki satu sisi dan keseimbangan.",
              " Langkahkan satu kaki ke depan, turunkan badan hingga kedua lutut menekuk sekitar 90 derajat. "
              "Lutut depan tidak melewati ujung kaki. Dorong kembali ke posisi awal dan ganti kaki."),
-            ("Tahan Papan", "plank",
+            ("Plank", "plank",
              "Menahan tubuh lurus seperti papan (plank) bertumpu pada lengan bawah untuk melatih otot inti.",
              " Letakkan siku tepat di bawah bahu, tubuh lurus dari kepala hingga tumit. "
              "Kencangkan perut dan bokong, pandangan ke lantai, dan bernapas normal selama menahan posisi."),
@@ -120,27 +122,27 @@ TINGKAT = {
               "membutuhkan kekuatan dasar yang lebih baik dan teknik yang "
               "lebih rapi."),
         gerakan=[
-            ("Push Up Biasa", "pushup",
+            ("Pushup", "pushup",
              "Push up standar dengan tubuh lurus, melatih dada, bahu, lengan belakang, dan otot inti sekaligus.",
              " Tangan selebar bahu, tubuh lurus seperti papan. Turunkan dada hingga hampir menyentuh lantai, "
              "siku membentuk sudut sekitar 45 derajat dari tubuh, lalu dorong naik dengan kuat."),
-            ("Tarik Badan", "pullup",
+            ("Pullup", "pullup",
              "Menarik tubuh ke atas hingga dagu melewati palang (pull up). Melatih punggung dan lengan depan.",
              " Pegang palang dengan genggaman sedikit lebih lebar dari bahu. Tarik dengan menggerakkan siku ke bawah, "
              "hindari mengayun. Turunkan perlahan hingga lengan lurus sebelum mengulang."),
-            ("Dips Paralel", "dips",
+            ("Dips", "dips",
              "Menurunkan dan mendorong tubuh di antara dua tumpuan (dips). Melatih lengan belakang, dada bawah, dan bahu.",
              " Gunakan palang paralel atau dua kursi kokoh. Tekuk siku hingga bahu sejajar siku, "
              "lalu dorong naik. Jaga bahu tetap turun dan dada sedikit condong ke depan."),
-            ("Jongkok Satu Kaki Bangku", "bulgarian",
+            ("Bulgarian Squat", "bulgarian",
              "Jongkok satu kaki dengan kaki belakang bertumpu di bangku (Bulgarian split squat). Melatih paha, bokong, dan keseimbangan.",
              " Letakkan punggung kaki belakang di bangku, kaki depan melangkah cukup jauh. "
              "Turunkan badan hingga paha depan sejajar lantai, lalu naik. Selesaikan satu sisi sebelum ganti kaki."),
-            ("Push Up Pinggul Naik", "pike",
+            ("Pike Pushup", "pike",
              "Push up dengan pinggul diangkat membentuk huruf V terbalik (pike push up). Fokus pada bahu.",
              " Mulai dari posisi V terbalik, kaki dan tangan tetap di lantai. Tekuk siku hingga kepala mendekati lantai "
              "di antara kedua tangan, lalu dorong naik. Ini persiapan menuju push up berdiri tangan."),
-            ("Tahan Papan Lanjutan", "adv_plank",
+            ("Advanced Plank", "adv_plank",
              "Variasi papan yang lebih berat, misalnya dengan mengangkat satu kaki atau tangan bergantian.",
              " Mulai dari posisi papan, lalu angkat satu kaki atau satu tangan tanpa memutar pinggul. "
              "Tahan beberapa detik, ganti sisi. Pertahankan perut mengencang dan tubuh tetap lurus."),
@@ -152,23 +154,23 @@ TINGKAT = {
               "sudah sangat berpengalaman. Lakukan pemanasan yang cukup, "
               "perhatikan batas tubuh, dan utamakan keamanan di atas target."),
         gerakan=[
-            ("Berdiri Tangan", "handstand",
+            ("Handstand", "handstand",
              "Berdiri dengan bertumpu pada kedua tangan (handstand). Melatih bahu, otot inti, dan keseimbangan.",
              " Mulai dekat tembok untuk bantuan. Tangan selebar bahu, dorong lantai dengan kuat, "
              "tubuh lurus dari tangan hingga ujung kaki. Pandangan ke arah ujung jari."),
-            ("Push Up Pemanah", "archer",
+            ("Archer Pushup", "archer",
              "Push up dengan satu lengan lurus ke samping (archer push up), langkah menuju push up satu lengan.",
              " Posisi tangan lebar. Turunkan badan ke satu sisi sementara lengan sisi lain tetap lurus. "
              "Dorong kembali ke tengah lalu ganti sisi. Beban utama ada di lengan yang menekuk."),
-            ("Bendera Manusia", "human_flag",
+            ("Human Flag", "human_flag",
              "Menahan tubuh horizontal di sebuah tiang (human flag). Salah satu gerakan kalistenik paling sulit.",
              " Pegang tiang dengan satu tangan di atas dan satu di bawah. Dorong tangan bawah, tarik tangan atas, "
              "lalu angkat tubuh sejajar lantai. Butuh kekuatan otot inti dan bahu yang sangat kuat."),
-            ("Duduk Huruf L", "lsit",
+            ("L Sit", "lsit",
              "Menahan tubuh di atas tangan dengan kaki lurus ke depan membentuk huruf L (L-sit).",
              " Tekan lantai atau palang paralel dengan kedua tangan hingga pinggul terangkat. "
              "Kaki tetap lurus dan sejajar lantai. Kencangkan perut dan dorong bahu ke bawah."),
-            ("Jongkok Satu Kaki", "pistol",
+            ("Pistol Squat", "pistol",
              "Jongkok penuh dengan satu kaki, kaki lainnya lurus ke depan (pistol squat). Melatih kekuatan, kelenturan, dan kontrol.",
              " Berdiri satu kaki, luruskan kaki lainnya ke depan. Turunkan badan hingga bokong hampir menyentuh tumit, "
              "tumit tetap menempel lantai, lalu berdiri kembali. Gunakan pegangan jika perlu."),
