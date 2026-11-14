@@ -250,11 +250,11 @@ class CaliSphere(tk.Tk):
         self.minsize(380, 640)
 
         self.mode = "light"
-        self.page = "home"          # home | easy | normal | hard | timer
-        self.compact = False        # True = tampilan HP, False = tampilan Laptop
+        self.page = "home"
+        self.compact = False
         self.W = UKURAN_LAPTOP[0]
-        self.expanded = {}          # status kartu yang dibuka
-        self.session = None         # data sesi timer
+        self.expanded = {}
+        self.session = None
         self.job = None
         self.scroll_cv = None
         self.timer_cv = None
@@ -302,7 +302,7 @@ class CaliSphere(tk.Tk):
         if img is None:
             return None
         lbl = tk.Label(parent, image=img, bg=bg, bd=0)
-        lbl.image = img                                    # cegah garbage collect
+        lbl.image = img
         lbl.pack(**pack)
         return lbl
 
