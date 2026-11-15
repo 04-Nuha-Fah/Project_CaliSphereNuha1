@@ -278,7 +278,7 @@ class CaliSphere(tk.Tk):
         png = os.path.join(FOLDER_UTAMA, "icon.png")
         try:
             if os.path.exists(png):
-                self.logo = tk.PhotoImage(file=png)       # simpan referensinya
+                self.logo = tk.PhotoImage(file=png)
         except tk.TclError:
             self.logo = None
         try:
@@ -429,19 +429,19 @@ class CaliSphere(tk.Tk):
         cv = tk.Canvas(bar, width=36, height=36, bg=t["latar"],
                        highlightthickness=0, cursor="hand2")
         cv.pack(side="right", padx=(8, 16), pady=10)
-        if self.mode == "light":      # ikon matahari
+        if self.mode == "light":
             cv.create_oval(11, 11, 25, 25, fill=MERAH, outline=MERAH)
             for i in range(8):
                 a = math.radians(i * 45)
                 cv.create_line(18 + 11 * math.cos(a), 18 + 11 * math.sin(a),
                                18 + 15 * math.cos(a), 18 + 15 * math.sin(a),
                                fill=MERAH, width=3, capstyle="round")
-        else:                         # ikon bulan
+        else:
             cv.create_oval(5, 5, 31, 31, fill=MERAH, outline=MERAH)
             cv.create_oval(13, 0, 38, 24, fill=t["latar"], outline=t["latar"])
         cv.bind("<Button-1>", lambda e: self.toggle_mode())
 
-        # tombol ganti tampilan HP <-> Laptop (menampilkan ikon tujuan)
+        # tombol ganti tampilan #
         lv = tk.Canvas(bar, width=36, height=36, bg=t["latar"],
                        highlightthickness=0, cursor="hand2")
         lv.pack(side="right", pady=10)
@@ -584,7 +584,7 @@ class CaliSphere(tk.Tk):
         start = lambda: self.start_session(key)
 
         if self.compact:
-            # ---- Tampilan HP: satu kolom, tombol MULAI tetap di bawah
+            # Tampilan HP #
             bottom = tk.Frame(self.content, bg=t["latar"])
             bottom.pack(side="bottom", fill="x", pady=10)
             RoundButton(bottom, "MULAI", start, 240, 54, t["latar"],
@@ -600,7 +600,7 @@ class CaliSphere(tk.Tk):
                 self._exercise_card(inner, key, ex, wrap, (20, 20))
             tk.Frame(inner, bg=t["latar"], height=6).pack()
         else:
-            # ---- Tampilan Laptop: kolom kiri (catatan + MULAI), kolom kanan (gerakan)
+            # Tampilan Laptop #
             left = tk.Frame(self.content, bg=t["latar"], width=LEBAR_KOLOM_KIRI)
             left.pack(side="left", fill="y", padx=(24, 12), pady=(0, 20))
             left.pack_propagate(False)
@@ -709,7 +709,7 @@ class CaliSphere(tk.Tk):
         end.pack(pady=10)
         end.bind("<Button-1>", lambda e: self._end_session())
 
-        # daftar gerakan di sisi kanan (khusus tampilan Laptop)
+        # daftar gerakan #
         if not self.compact and s is not None:
             panel = tk.Frame(row, bg=t["kartu"], highlightbackground=MERAH,
                              highlightthickness=1, width=270)
@@ -740,6 +740,136 @@ class CaliSphere(tk.Tk):
         total = WAKTU_LATIHAN if work else WAKTU_ISTIRAHAT
         frac = max(0.0, s["remaining"] / total)
         cur = exs[s["idx"]]
+
+        cv.create_text(190, 20, fill=t["keterangan"], font=(FONT, 11, "bold"),
+                       text=f"{lv['mode']}  \u2022  GERAKAN {s['idx'] + 1} / {n}")
+        cv.create_text(190, 56, fill=t["teks"], font=(FONT, 20, "bold"),
+                       text=cur[0] if work else "Istirahat")
+
+        cx, cy, r = 190, 235, 128
+        box = (cx - r, cy - r, cx + r, cy + r)
+        cv.create_arc(*box, start=225, extent=-270, style="arc",
+                      outline=t["jalur"], width=16)
+        if frac > 0:
+            cv.create_arc(*box, start=225, extent=-270 * frac, style="arc",
+                          outline=MERAH, width=16)
+
+        # ikon di dalam lingkaran #
+        icon_key = cur[1] if work else exs[min(s["idx"] + 1, n - 1)][1]
+        draw_icon(cv, icon_key, cx - 45, cy - 100, 0.9, t)
+
+        m, sec = divmod(max(0, s["remaining"]), 60)
+        cv.create_text(cx, cy + 28, text=f"{m:02d}:{sec:02d}", fill=t["teks"],
+                       font=(FONT, 44, "bold"))
+        status = "LATIHAN" if work else "ISTIRAHAT"
+        if not s["running"]:
+            status = "DIJEDA"
+        cv.create_text(cx, cy + 74, text=status, fill=MERAH,
+                       font=(FONT, 13, "bold"))
+
+        if not work:
+            nxt = exs[min(s["idx"] + 1, n - 1)][0]
+            cv.create_text(190, 420, fill=t["keterangan"], font=(FONT, 11),
+                           text=f"Selanjutnya: {nxt}")
+        else:
+            cv.create_text(190, 420, fill=t["keterangan"], font=(FONT, 11),
+                           text=f"Lakukan gerakan selama {WAKTU_LATIHAN} detik")
+
+        # daftar gerakan (tampilan Laptop)
+        for i, lbl in enumerate(self.step_labels):
+            name = exs[i][0]
+            if i < s["idx"]:
+                lbl.config(text=f"\u2713  {name}", fg=t["keterangan"],
+                           font=(FONT, 12))
+            elif i == s["idx"]:
+                lbl.config(text=f"\u25CF  {name}", fg=MERAH,
+                           font=(FONT, 12, "bold"))
+            else:
+                lbl.config(text=f"\u25CB  {name}", fg=t["teks"],
+                           font=(FONT, 12))
+
+    def _tick(self):
+        self.job = None
+        s = self.session
+        if s is None:
+            return
+        if s["running"]:
+            s["remaining"] -= 1
+            if s["remaining"] <= 0:
+                self._advance()
+            elif s["remaining"] <= 3:
+                self.bell()
+        if self.session is not None:
+            self.draw_timer()
+            self.job = self.after(1000, self._tick)
+
+    def _advance(self):
+        """Pindah fase: latihan -> istirahat -> gerakan berikutnya -> selesai."""
+        s = self.session
+        n = len(TINGKAT[s["level"]]["gerakan"])
+        self.bell()
+        if s["phase"] == "work":
+            if s["idx"] >= n - 1:
+                self._finish()
+                return
+            s["phase"], s["remaining"] = "rest", WAKTU_ISTIRAHAT
+        else:
+            s["idx"] += 1
+            s["phase"], s["remaining"] = "work", WAKTU_LATIHAN
+
+    def _toggle_pause(self):
+        s = self.session
+        if s is None:
+            return
+        s["running"] = not s["running"]
+        if self.pause_btn is not None:
+            self.pause_btn.set_text("JEDA" if s["running"] else "LANJUT")
+        self.draw_timer()
+
+    def _skip(self):
+        if self.session is None:
+            return
+        self._advance()
+        if self.session is not None:
+            self.draw_timer()
+
+    def _end_session(self):
+        level = self.session["level"] if self.session else "easy"
+        self._cancel_job()
+        self.session = None
+        self.goto(level)
+
+    def _finish(self):
+        level = self.session["level"]
+        self._cancel_job()
+        self.session = None
+        self.goto(level)
+        self._show_popup()
+
+    # --------------------------------------------------------------- popup
+    def _show_popup(self):
+        t = self.t
+        top = tk.Toplevel(self)
+        top.title("Latihan Selesai")
+        top.configure(bg=t["latar"])
+        top.resizable(False, False)
+        top.transient(self)
+        w, h = 340, 240
+        x = self.winfo_x() + (self.winfo_width() - w) // 2
+        y = self.winfo_y() + (self.winfo_height() - h) // 2
+        top.geometry(f"{w}x{h}+{x}+{y}")
+
+        box = tk.Frame(top, bg=t["kartu"], highlightbackground=MERAH,
+                       highlightthickness=2)
+        box.pack(fill="both", expand=True, padx=10, pady=10)
+        tk.Label(box, text="Latihan Selesai!", fg=MERAH, bg=t["kartu"],
+                 font=(FONT, 17, "bold")).pack(pady=(22, 10))
+        tk.Label(box, text=TEKS_POPUP, fg=t["teks"], bg=t["kartu"],
+                 font=(FONT, 12), wraplength=270, justify="center").pack(
+            padx=16)
+        RoundButton(box, "SIAP", top.destroy, 140, 44, t["kartu"],
+                    fg=t["di_atas_merah"], font_size=15, radius=14).pack(pady=20)
+        top.grab_set()
 
 if __name__ == "__main__":
     CaliSphere().mainloop()
