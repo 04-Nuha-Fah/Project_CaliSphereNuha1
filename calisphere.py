@@ -405,9 +405,9 @@ class CaliSphere(tk.Tk):
         self.ukuran_akhir = (e.width, e.height)
         if self.resize is not None:
             self.after_cancel(self.resize)
-        self.resize = self.after(200, self._setelah_ubah)
+        self.resize = self.after(200, self.perubahan)
 
-    def _setelah_ubah(self):
+    def perubahan(self):
         self.resize = None
         self.gambar_ulang()
 
@@ -491,9 +491,9 @@ class CaliSphere(tk.Tk):
         if self.tema_aktif == "terang":
             kv_tema.create_oval(11, 11, 25, 25, fill=KUNING, outline=KUNING)
             for i in range(8):
-                sudut = math.radians((i * 45))
+                sudut = math.radians(i * 45)
                 kv_tema.create_line(18 + 11 * math.cos(sudut), 18 + 11 * math.sin(sudut),
-                               18 + 15 * math.cos(sudut), 18 + 15 * math.sin(sudut),
+                                    18 + 15 * math.cos(sudut), 18 + 15 * math.sin(sudut),
                                     fill=KUNING, width=3, capstyle="round")
         else:
             kv_tema.create_oval(5, 5, 31, 31, fill=KUNING, outline=KUNING)
@@ -764,7 +764,7 @@ class CaliSphere(tk.Tk):
                           bg=tema["latar"], font=(FONT, 11, "underline"),
                           cursor="hand2")
         akhiri.pack(pady=10)
-        akhiri.bind("<Button-1>", lambda e: self.sesi())
+        akhiri.bind("<Button-1>", lambda e: self.sesi_mati())
 
         # daftar_gerakan gerakan di sisi kanan (khusus tampilan Laptop)
         if not self.ringkas and sesi is not None:
@@ -887,7 +887,7 @@ class CaliSphere(tk.Tk):
         if self.sesi is not None:
             self.gambar_timer()
 
-    def sesi(self):
+    def sesi_mati(self):
         level = self.sesi["tingkat"] if self.sesi else "easy"
         self.timer_mati()
         self.sesi = None
